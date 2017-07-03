@@ -58,11 +58,7 @@ for i=1:1:100000
     else if(error(i)>0)  %牵引
         acontrol(i)=1.0;
         Addw=2.5711*10^-2+3.403*10^-6*vcontrol(i)^2;%基本阻力
-        LC=myadd(scontrol(i));
         sumAcc=acontrol(i)-Addw-myadd(scontrol(i));%加速度和
-        if(sumAcc<0)
-            sumAcc=0.1;
-        end
         dv=sumAcc*Tsample;
         ds=vcontrol(i) * Tsample + 0.5 * sumAcc * Tsample^2;
         vcontrol(i+1)=vcontrol(i)+dv;
@@ -70,11 +66,11 @@ for i=1:1:100000
 
     
     else if(error(i)<=0)  %跟随
-        Addw=2.5711*10^-2+3.403*10^-6*vcontrol(i)^2;
-        acontrol(i)=Addw+myadd(scontrol(i));%基本阻力用于求能耗
-        vcontrol(i)=stableVelocity;
-        dv=0;
-        ds=vcontrol(i)*Tsample; %匀速
+        acontrol(i)=-1.1;
+        Addw=2.5711*10^-2+3.403*10^-6*vcontrol(i)^2;%基本阻力
+        sumAcc=acontrol(i)-Addw-myadd(scontrol(i));%加速度和
+        dv=sumAcc*Tsample;
+        ds=vcontrol(i) * Tsample + 0.5 * sumAcc * Tsample^2;
         vcontrol(i+1)=vcontrol(i)+dv;
         scontrol(i+1)=scontrol(i)+ds; 
        

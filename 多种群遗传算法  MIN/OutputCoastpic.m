@@ -81,11 +81,16 @@ for i=1:1:100000
 
     
     else if(verrorControl(i)<=0)  %跟随
-        Addw=2.5711*10^-2+3.403*10^-6*vcontrol(i)^2;
-        acontrol(i)=Addw+myadd(scontrol(i));%基本阻力用于求能耗，此处位于计算效果，制动力取线路基本数据+曲线变化率
-        vcontrol(i)=stableVelocity;
-        dv=0;
-        ds=vcontrol(i)*Tsample; 
+%         Addw=2.5711*10^-2+3.403*10^-6*vcontrol(i)^2;
+%         acontrol(i)=Addw+myadd(scontrol(i));%基本阻力用于求能耗，此处位于计算效果，制动力取线路基本数据+曲线变化率
+%         vcontrol(i)=stableVelocity;
+%         dv=0;
+%         ds=vcontrol(i)*Tsample; 
+        acontrol(i)=-1.1;
+        Addw=2.5711*10^-2+3.403*10^-6*vcontrol(i)^2;%基本阻力
+        sumAcc=acontrol(i)-Addw-myadd(scontrol(i));%加速度和
+        dv=sumAcc*Tsample;
+        ds=vcontrol(i) * Tsample + 0.5 * sumAcc * Tsample^2;
         
         vcontrol(i+1)=vcontrol(i)+dv;
         scontrol(i+1)=scontrol(i)+ds; 
