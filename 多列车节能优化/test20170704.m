@@ -13,6 +13,7 @@ col=size(x,1);
 for m=1:col
 %% 初始化多列车
 xTimeofTrian2StionStop=x(m,:);
+xIndex=1;
 Length=length(EntireLinevGreen);
 EntireLineEnergyConsumption=0;
 Tsample=0.07;
@@ -70,8 +71,9 @@ for i=1:1:1000000
    
   if Train2aControl == -1
       if ~lockoftrain2stop 
-          Timeoftrain2thisStation=xTimeofTrian2StionStop(1);%本列车在此站台的停站时间  ***note:如果是多个站区间的话，需要更新括号中的index：1
+          Timeoftrain2thisStation=xTimeofTrian2StionStop(xIndex);%本列车在此站台的停站时间  ***note:如果是多个站区间的话，需要更新括号中的index：1
           Train2Stationtime = Train2Stationtime + Timeoftrain2thisStation;  %本列车在该站台之前的所有停站时间的总和
+          xIndex = xIndex+1;  %更新列车2对应下一站的停站时间表索引
       end
        Train2aControl=0;      
        lockoftrain2stop=1;     
